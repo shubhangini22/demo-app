@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="app.min.css">
+    <style>
+      /*code for creating the colour section
+      for making it to animated we need to
+      add some javascript code*/
+      			ul.colour-picker li {
+				position: relative;
+				display: block;
+				float: left;
+				height: 54px;
+				width: 25%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			ul.colour-picker li[data-colour="teal"] {
+				background: #2B9;
+			}
+			ul.colour-picker li[data-colour="green"] {
+				background: #3C7;
+			}
+			ul.colour-picker li[data-colour="yellow"] {
+				background: #EC1;
+			}
+			ul.colour-picker li[data-colour="orange"] {
+				background: #E82;
+			}
+			ul.colour-picker li[data-colour="red"] {
+				background: #E54;
+			}
+			ul.colour-picker li[data-colour="blue"] {
+				background: #39D;
+			}
+			ul.colour-picker li[data-colour="dark-blue"] {
+				background: #345;
+			}
+			ul.colour-picker li[data-colour="white"] {
+				background: #FFF;
+			}
+			ul.colour-picker li.active:before {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				background: rgba(0,0,0,0.1);
+				content: "";
+			}
+
+			@-webkit-keyframes pulse {
+				0% {
+					background-color: #CCC;
+				}
+				25% {
+					background-color: #EEE;
+				}
+				50% {
+					background-color: #CCC;
+				}
+				75% {
+					background-color: #EEE;
+				}
+				100% {
+					background-color: #CCC;
+				}
+			}
+			.scroll-page .loading {
+				margin: 12px auto;
+				border: 8px solid #AAA;
+				height: 16px;
+				width: 16px;
+				background: #CCC;
+				border-radius: 16px;
+				-webkit-animation: pulse 2s ease-in-out 0s infinite;
+			}
+
+      /* TODO */
+    </style>
+  </head>
+
+  <body>
+    <div class="app-page" data-page="home">
+      <div class="app-topbar">
+        <div class="app-title">Home page</div>
+      </div>
+      <div class="app-content">
+        <!--this paragraph is for class
+        app-section-->
+        <p class="app-section">
+          Welcome to this demo app
+        </p>
+         <div class="app-section">
+          <b>Topbar colours:</b><br>
+					<ul class="colour-picker">
+						<li data-colour="teal"></li>
+						<li data-colour="green"></li>
+						<li data-colour="yellow"></li>
+						<li data-colour="orange"></li>
+						<li data-colour="red"></li>
+						<li data-colour="blue"></li>
+						<li data-colour="dark-blue"></li>
+						<li data-colour="white"></li>
+						<div class="clear"></div>
+					</ul>
+          <div class="app-button" data-target="page2">Go to Page 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-page" data-page="page2">
+      <div class="app-topbar">
+        <div class="app-button left" data-back data-autotitle></div>
+        <div class="app-title">Page 2</div>
+      </div>
+      <div class="app-content">
+        Page 2 is lonely
+      </div>
+    </div>
+
+    <script src="zepto.js"></script>
+    <script src="app.min.js"></script>
+    <script>
+      var oldcolour="";
+      //this is to remove old colour
+      function setupPageColour(page)
+      {
+        $(page).find('ul.colour-picker li')
+					.clickable()
+					.on('click', function () {
+						//var oldColour = colour;
+						var colour = $(this).data('colour');
+           if(oldcolour!="")
+            {
+              $(".app-topbar").removeClass(oldcolour);
+            }
+            //removing the colour only if the string is empty
+            $(".app-topbar").addClass(colour);
+            //we accesed the top bar class here
+            //to write the function and change colour onclick
+             oldcolour=colour;
+          });
+          //closing the function code
+      }
+      App.controller('home', function (page) {
+       setupPageColour(page);
+			//put javascripts stuff here
+      });
+
+      App.controller('page2', function (page) {
+        // put stuff here
+        setupPageColour(page);
+      });
+
+      try {
+        App.restore();
+      } catch (err) {
+        App.load('home');
+      }
+    </script>
+  </body>
+</html>
